@@ -1,6 +1,4 @@
 ﻿
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace GestionAnnonce.Api.Domain
 {
     public class Annonce
@@ -13,6 +11,7 @@ namespace GestionAnnonce.Api.Domain
         public int NbPieces { get; set; }
         public DateTime DatePublication { get; set; }
         public IList<Photo> Photos { get; set; } = new List<Photo>();
+        public int AdresseId { get; set; }
         public Adresse? Adresse { get; set; }
         public int UtilisateurId { get; set; }
         public Utilisateur? Utilisateur { get; set; }

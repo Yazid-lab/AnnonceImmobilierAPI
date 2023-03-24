@@ -15,8 +15,9 @@ namespace GestionAnnonce.Api.Domain
         public string Email { get; set; } = string.Empty;
         public string Telephone { get; set; } = string.Empty;
 
-        public Utilisateur(string nom, string prenom, string email, string telephone)
+        public Utilisateur(int id,string nom, string prenom, string email, string telephone)
         {
+            Id = id;
             Nom = nom;
             Prenom = prenom;
             Email = email;
