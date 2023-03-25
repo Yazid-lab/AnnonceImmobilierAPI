@@ -20,7 +20,7 @@ namespace GestionAnnonce.Api.Services
 
         public async Task<Annonce?> GetAnnonceByIdAsync(int id)
         {
-            return await _context.Annonces.Where(annonce => annonce.Id == id).FirstOrDefaultAsync();
+            return await _context.Annonces.Include(annonce => annonce.Photos).Where(annonce => annonce.Id == id).FirstOrDefaultAsync();
         }
     }
 }

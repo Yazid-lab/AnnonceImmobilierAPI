@@ -1,7 +1,8 @@
-﻿
-namespace GestionAnnonce.Api.Domain
+﻿using GestionAnnonce.Api.Domain;
+
+namespace GestionAnnonce.Api.Models
 {
-    public class Annonce
+    public class AnnonceDto
     {
         public int Id { get; set; }
         public string Titre { get; set; } = string.Empty;
@@ -10,18 +11,8 @@ namespace GestionAnnonce.Api.Domain
         public int Superficie { get; set; }
         public int NbPieces { get; set; }
         public DateTime DatePublication { get; set; }
-        public ICollection<Photo> Photos { get; set; } = new List<Photo>();
+        public ICollection<PhotoDto> Photos { get; set; } = new List<PhotoDto>();
         public int AdresseId { get; set; }
-        public Adresse? Adresse { get; set; }
         public int UtilisateurId { get; set; }
-        public Utilisateur? Utilisateur { get; set; }
-
-        public Annonce(string titre)
-        {
-            Titre = titre;
-        }
-
     }
-
-
 }

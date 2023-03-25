@@ -11,9 +11,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<GestionAnnonceContext>(dbContextoptions =>
-    dbContextoptions.UseSqlServer("Data Source=localhost;Initial Catalog=GestionAnnonce;Integrated Security=True; TrustServerCertificate=True"));
+    dbContextoptions.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IAnnonceRepository, AnnonceRepository>();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

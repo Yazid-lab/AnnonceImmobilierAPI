@@ -1,4 +1,6 @@
-﻿using GestionAnnonce.Api.Domain;
+﻿using AutoMapper;
+using GestionAnnonce.Api.Domain;
+using GestionAnnonce.Api.Models;
 using GestionAnnonce.Api.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -11,9 +13,12 @@ namespace GestionAnnonce.Api.Controllers
     public class AnnoncesController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public AnnoncesController(IMediator mediator)
+        private readonly IMapper _mapper;
+
+        public AnnoncesController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpGet]
@@ -35,7 +40,7 @@ namespace GestionAnnonce.Api.Controllers
                 return NotFound();
             }
 
-            return Ok(annonce);
+            return Ok(_mapper.Map<AnnonceDto>(annonce));
         }
     }
 }
