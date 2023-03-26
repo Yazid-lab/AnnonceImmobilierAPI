@@ -12,7 +12,7 @@ namespace GestionAnnonce.Api.Models
         public int NbPieces { get; set; }
         public DateTime DatePublication { get; set; }
         public ICollection<PhotoDto> Photos { get; set; } = new List<PhotoDto>();
-        public int AdresseId { get; set; }
+        public Adresse Adresse { get; set; }
         public int UtilisateurId { get; set; }
     }
 }

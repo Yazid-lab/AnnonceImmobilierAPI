@@ -4,6 +4,7 @@ using GestionAnnonce.Api.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestionAnnonce.Api.Migrations
 {
     [DbContext(typeof(GestionAnnonceContext))]
-    partial class GestionAnnonceContextModelSnapshot : ModelSnapshot
+    [Migration("20230326112708_lastTryMaybe")]
+    partial class lastTryMaybe
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,7 +66,7 @@ namespace GestionAnnonce.Api.Migrations
                         new
                         {
                             Id = 1,
-                            DatePublication = new DateTime(2023, 3, 26, 12, 31, 56, 96, DateTimeKind.Local).AddTicks(1859),
+                            DatePublication = new DateTime(2023, 3, 26, 12, 27, 8, 700, DateTimeKind.Local).AddTicks(591),
                             Description = "desc1",
                             NbPieces = 2,
                             Prix = 111m,
@@ -164,6 +167,9 @@ namespace GestionAnnonce.Api.Migrations
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
+                            b1.Property<int>("Id")
+                                .HasColumnType("int");
+
                             b1.Property<double>("Latitude")
                                 .HasColumnType("float");
 
@@ -188,18 +194,6 @@ namespace GestionAnnonce.Api.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("AnnonceId");
-
-                            b1.HasData(
-                                new
-                                {
-                                    AnnonceId = 1,
-                                    CodePostal = "code",
-                                    Latitude = 11.0,
-                                    Longitude = 22.0,
-                                    Pays = "tunisia",
-                                    Rue = "rue",
-                                    Ville = "tunis"
-                                });
                         });
 
                     b.Navigation("Adresse");

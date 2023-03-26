@@ -11,7 +11,6 @@ namespace GestionAnnonce.Api.Domain
         public int NbPieces { get; set; }
         public DateTime DatePublication { get; set; }
         public ICollection<Photo> Photos { get; set; } = new List<Photo>();
-        public int AdresseId { get; set; }
         public Adresse? Adresse { get; set; }
         public int UtilisateurId { get; set; }
         public Utilisateur? Utilisateur { get; set; }
