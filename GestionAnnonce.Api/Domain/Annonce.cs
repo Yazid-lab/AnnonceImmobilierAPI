@@ -15,6 +15,7 @@ namespace GestionAnnonce.Api.Domain
         public int UtilisateurId { get; set; }
         public Utilisateur? Utilisateur { get; set; }
 
+        public Annonce() { }
         public Annonce(string titre)
         {
             Titre = titre;

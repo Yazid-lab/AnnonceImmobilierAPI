@@ -6,39 +6,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GestionAnnonce.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class initialMigration : Migration
+    public partial class changedConfig : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Adresse",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Rue = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Ville = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CodePostal = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Pays = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Latitude = table.Column<double>(type: "float", nullable: false),
-                    Longitude = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Adresse", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Utilisateurs",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Prenom = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nom = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Prenom = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Telephone = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Telephone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AnnonceId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,17 +40,17 @@ namespace GestionAnnonce.Api.Migrations
                     Superficie = table.Column<int>(type: "int", nullable: false),
                     NbPieces = table.Column<int>(type: "int", nullable: false),
                     DatePublication = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AdresseId = table.Column<int>(type: "int", nullable: true),
+                    Adresse_Rue = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Adresse_Ville = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Adresse_CodePostal = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Adresse_Pays = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Adresse_Latitude = table.Column<double>(type: "float", nullable: true),
+                    Adresse_Longitude = table.Column<double>(type: "float", nullable: true),
                     UtilisateurId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Annonces", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Annonces_Adresse_AdresseId",
-                        column: x => x.AdresseId,
-                        principalTable: "Adresse",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Annonces_Utilisateurs_UtilisateurId",
                         column: x => x.UtilisateurId,
@@ -97,15 +80,26 @@ namespace GestionAnnonce.Api.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Annonces_AdresseId",
+            migrationBuilder.InsertData(
+                table: "Utilisateurs",
+                columns: new[] { "Id", "AnnonceId", "Email", "Nom", "Prenom", "Telephone" },
+                values: new object[] { 1, null, "email1", "nom1", "prenom1", "tel1" });
+
+            migrationBuilder.InsertData(
                 table: "Annonces",
-                column: "AdresseId");
+                columns: new[] { "Id", "Adresse_CodePostal", "Adresse_Latitude", "Adresse_Longitude", "Adresse_Pays", "Adresse_Rue", "Adresse_Ville", "DatePublication", "Description", "NbPieces", "Prix", "Superficie", "Titre", "UtilisateurId" },
+                values: new object[] { 1, "code", 11.0, 22.0, "tunisia", "rue", "tunis", new DateTime(2023, 3, 27, 15, 4, 25, 972, DateTimeKind.Local).AddTicks(4761), "desc1", 2, 111m, 1, "annonce 1", 1 });
+
+            migrationBuilder.InsertData(
+                table: "Photos",
+                columns: new[] { "Id", "AnnonceId", "Description", "Url" },
+                values: new object[] { 1, 1, "description1", "url1" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Annonces_UtilisateurId",
                 table: "Annonces",
-                column: "UtilisateurId");
+                column: "UtilisateurId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photos_AnnonceId",
@@ -121,9 +115,6 @@ namespace GestionAnnonce.Api.Migrations
 
             migrationBuilder.DropTable(
                 name: "Annonces");
-
-            migrationBuilder.DropTable(
-                name: "Adresse");
 
             migrationBuilder.DropTable(
                 name: "Utilisateurs");

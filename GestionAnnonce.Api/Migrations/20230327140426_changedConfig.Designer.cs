@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestionAnnonce.Api.Migrations
 {
     [DbContext(typeof(GestionAnnonceContext))]
-    [Migration("20230324120344_addedData")]
-    partial class addedData
+    [Migration("20230327140426_changedConfig")]
+    partial class changedConfig
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,53 +25,6 @@ namespace GestionAnnonce.Api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("GestionAnnonce.Api.Domain.Adresse", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CodePostal")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Latitude")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Longitude")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Pays")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Rue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Ville")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Adresses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CodePostal = "codepostal1",
-                            Latitude = 11.0,
-                            Longitude = 11.0,
-                            Pays = "pays1",
-                            Rue = "rue1",
-                            Ville = "ville1"
-                        });
-                });
-
             modelBuilder.Entity("GestionAnnonce.Api.Domain.Annonce", b =>
                 {
                     b.Property<int>("Id")
@@ -79,9 +32,6 @@ namespace GestionAnnonce.Api.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AdresseId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("DatePublication")
                         .HasColumnType("datetime2");
@@ -108,9 +58,8 @@ namespace GestionAnnonce.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdresseId");
-
-                    b.HasIndex("UtilisateurId");
+                    b.HasIndex("UtilisateurId")
+                        .IsUnique();
 
                     b.ToTable("Annonces");
 
@@ -118,13 +67,12 @@ namespace GestionAnnonce.Api.Migrations
                         new
                         {
                             Id = 1,
-                            AdresseId = 1,
-                            DatePublication = new DateTime(2023, 3, 24, 13, 3, 44, 369, DateTimeKind.Local).AddTicks(2245),
+                            DatePublication = new DateTime(2023, 3, 27, 15, 4, 25, 972, DateTimeKind.Local).AddTicks(4761),
                             Description = "desc1",
                             NbPieces = 2,
                             Prix = 111m,
                             Superficie = 1,
-                            Titre = "annonce1",
+                            Titre = "annonce 1",
                             UtilisateurId = 1
                         });
                 });
@@ -172,17 +120,22 @@ namespace GestionAnnonce.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AnnonceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nom")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Prenom")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Telephone")
                         .IsRequired()
@@ -205,17 +158,58 @@ namespace GestionAnnonce.Api.Migrations
 
             modelBuilder.Entity("GestionAnnonce.Api.Domain.Annonce", b =>
                 {
-                    b.HasOne("GestionAnnonce.Api.Domain.Adresse", "Adresse")
-                        .WithMany()
-                        .HasForeignKey("AdresseId")
+                    b.HasOne("GestionAnnonce.Api.Domain.Utilisateur", "Utilisateur")
+                        .WithOne("Annonce")
+                        .HasForeignKey("GestionAnnonce.Api.Domain.Annonce", "UtilisateurId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GestionAnnonce.Api.Domain.Utilisateur", "Utilisateur")
-                        .WithMany()
-                        .HasForeignKey("UtilisateurId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.OwnsOne("GestionAnnonce.Api.Domain.Adresse", "Adresse", b1 =>
+                        {
+                            b1.Property<int>("AnnonceId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("CodePostal")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<double>("Latitude")
+                                .HasColumnType("float");
+
+                            b1.Property<double>("Longitude")
+                                .HasColumnType("float");
+
+                            b1.Property<string>("Pays")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Rue")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Ville")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("AnnonceId");
+
+                            b1.ToTable("Annonces");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AnnonceId");
+
+                            b1.HasData(
+                                new
+                                {
+                                    AnnonceId = 1,
+                                    CodePostal = "code",
+                                    Latitude = 11.0,
+                                    Longitude = 22.0,
+                                    Pays = "tunisia",
+                                    Rue = "rue",
+                                    Ville = "tunis"
+                                });
+                        });
 
                     b.Navigation("Adresse");
 
@@ -236,6 +230,12 @@ namespace GestionAnnonce.Api.Migrations
             modelBuilder.Entity("GestionAnnonce.Api.Domain.Annonce", b =>
                 {
                     b.Navigation("Photos");
+                });
+
+            modelBuilder.Entity("GestionAnnonce.Api.Domain.Utilisateur", b =>
+                {
+                    b.Navigation("Annonce")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

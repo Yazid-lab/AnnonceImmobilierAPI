@@ -55,7 +55,8 @@ namespace GestionAnnonce.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UtilisateurId");
+                    b.HasIndex("UtilisateurId")
+                        .IsUnique();
 
                     b.ToTable("Annonces");
 
@@ -63,12 +64,12 @@ namespace GestionAnnonce.Api.Migrations
                         new
                         {
                             Id = 1,
-                            DatePublication = new DateTime(2023, 3, 26, 12, 31, 56, 96, DateTimeKind.Local).AddTicks(1859),
+                            DatePublication = new DateTime(2023, 3, 27, 15, 4, 25, 972, DateTimeKind.Local).AddTicks(4761),
                             Description = "desc1",
                             NbPieces = 2,
                             Prix = 111m,
                             Superficie = 1,
-                            Titre = "annonce1",
+                            Titre = "annonce 1",
                             UtilisateurId = 1
                         });
                 });
@@ -116,17 +117,22 @@ namespace GestionAnnonce.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AnnonceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nom")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Prenom")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Telephone")
                         .IsRequired()
@@ -150,8 +156,8 @@ namespace GestionAnnonce.Api.Migrations
             modelBuilder.Entity("GestionAnnonce.Api.Domain.Annonce", b =>
                 {
                     b.HasOne("GestionAnnonce.Api.Domain.Utilisateur", "Utilisateur")
-                        .WithMany()
-                        .HasForeignKey("UtilisateurId")
+                        .WithOne("Annonce")
+                        .HasForeignKey("GestionAnnonce.Api.Domain.Annonce", "UtilisateurId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -221,6 +227,12 @@ namespace GestionAnnonce.Api.Migrations
             modelBuilder.Entity("GestionAnnonce.Api.Domain.Annonce", b =>
                 {
                     b.Navigation("Photos");
+                });
+
+            modelBuilder.Entity("GestionAnnonce.Api.Domain.Utilisateur", b =>
+                {
+                    b.Navigation("Annonce")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
