@@ -1,5 +1,5 @@
 ﻿using GestionAnnonce.Api.DbContexts;
-using GestionAnnonce.Api.Domain;
+using GestionAnnonce.Api.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace GestionAnnonce.Api.Services

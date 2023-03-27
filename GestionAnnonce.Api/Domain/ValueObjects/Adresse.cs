@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace GestionAnnonce.Api.Domain
+namespace GestionAnnonce.Api.Domain.ValueObjects
 {
     [Owned]
     public class Adresse

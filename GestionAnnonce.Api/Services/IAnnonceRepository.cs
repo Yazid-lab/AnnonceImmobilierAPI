@@ -1,4 +1,4 @@
-﻿using GestionAnnonce.Api.Domain;
+﻿using GestionAnnonce.Api.Domain.Entities;
 
 namespace GestionAnnonce.Api.Services
 {

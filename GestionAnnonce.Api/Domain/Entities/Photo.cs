@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GestionAnnonce.Api.Domain
+namespace GestionAnnonce.Api.Domain.Entities
 {
     public class Photo
     {

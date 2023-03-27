@@ -1,4 +1,4 @@
-﻿using GestionAnnonce.Api.Domain;
+﻿using GestionAnnonce.Api.Domain.Entities;
 using GestionAnnonce.Api.Queries;
 using GestionAnnonce.Api.Services;
 using MediatR;

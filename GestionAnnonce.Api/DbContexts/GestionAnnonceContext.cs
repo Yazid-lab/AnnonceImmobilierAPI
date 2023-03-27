@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using GestionAnnonce.Api.Configurations;
-using GestionAnnonce.Api.Domain;
+using GestionAnnonce.Api.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 

@@ -1,4 +1,4 @@
-﻿using GestionAnnonce.Api.Domain;
+﻿using GestionAnnonce.Api.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

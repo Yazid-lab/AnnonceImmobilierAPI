@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using GestionAnnonce.Api.Domain;
+using GestionAnnonce.Api.Domain.Entities;
 using GestionAnnonce.Api.Models;
 using GestionAnnonce.Api.Queries;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionAnnonce.Api.Controllers

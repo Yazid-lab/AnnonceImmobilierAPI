@@ -1,5 +1,6 @@
-﻿
-namespace GestionAnnonce.Api.Domain
+﻿using GestionAnnonce.Api.Domain.ValueObjects;
+
+namespace GestionAnnonce.Api.Domain.Entities
 {
     public class Annonce
     {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GestionAnnonce.Api.Domain
+namespace GestionAnnonce.Api.Domain.Entities
 {
     public class Utilisateur
     {
@@ -14,7 +14,7 @@ namespace GestionAnnonce.Api.Domain
         public Annonce Annonce { get; set; }
 
 
-        public Utilisateur(int id,string nom, string prenom, string email, string telephone)
+        public Utilisateur(int id, string nom, string prenom, string email, string telephone)
         {
             Id = id;
             Nom = nom;
