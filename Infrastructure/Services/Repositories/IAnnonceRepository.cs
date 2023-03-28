@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace GestionAnnonce.Api.Services
+namespace Infrastructure.Services.Repositories
 {
     public interface IAnnonceRepository
     {

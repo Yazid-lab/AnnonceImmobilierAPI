@@ -2,7 +2,7 @@
 using Infrastructure.Persistence.DbContexts;
 using Microsoft.EntityFrameworkCore;
 
-namespace GestionAnnonce.Api.Services
+namespace Infrastructure.Services.Repositories
 {
     public class AnnonceRepository : IAnnonceRepository
     {

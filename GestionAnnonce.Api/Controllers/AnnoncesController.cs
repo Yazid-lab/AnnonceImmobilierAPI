@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using GestionAnnonce.Api.Domain.Entities;
-using GestionAnnonce.Api.Models;
-using GestionAnnonce.Api.Queries;
+using Domain.Entities;
+using GestionAnnonce.Application.Annonces.Queries.GetAnnonceById;
+using GestionAnnonce.Application.Annonces.Queries.GetAnnonces;
+using GestionAnnonce.Application.Common.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +25,7 @@ namespace GestionAnnonce.Api.Controllers
         public async Task<ActionResult<IEnumerable<Annonce>>> GetAnnonces()
         {
             var annoncesList = await _mediator.Send(new GetAnnoncesQuery());
-            return Ok(annoncesList);
+            return Ok(_mapper.Map<IEnumerable<AnnonceDto>>(annoncesList));
         }
 
         [HttpGet("{annonceId:int}")]
