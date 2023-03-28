@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GestionAnnonce.Application.Common.Interfaces
 {
-    public interface IGestionAnnonceContext
+    public interface IGestionAnnonceContext 
     {
          DbSet<Annonce> Annonces { get; }
          DbSet<Photo> Photos { get; }

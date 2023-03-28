@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Entities;
+using GestionAnnonce.Application.Annonces.Commands.DeleteAnnonce;
 using GestionAnnonce.Application.Annonces.Queries.GetAnnonceById;
 using GestionAnnonce.Application.Annonces.Queries.GetAnnonces;
 using GestionAnnonce.Application.Common.Models;
@@ -41,6 +42,13 @@ namespace GestionAnnonce.Api.Controllers
             }
 
             return Ok(_mapper.Map<AnnonceDto>(annonce));
+        }
+
+        [HttpDelete("{annonceId:int}")]
+        public async Task<ActionResult<int>> DeleteAnnonce(int annonceId)
+        {
+            var id = await _mediator.Send(new DeleteAnnonceCommand(annonceId));
+            return Ok(id);
         }
     }
 }

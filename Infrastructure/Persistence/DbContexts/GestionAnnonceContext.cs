@@ -81,9 +81,9 @@ namespace Infrastructure.Persistence.DbContexts
         }
 
         // TODO: If domain events are needed, Override this method and add some event dispatching using MediatR
-        //public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-        //{
-        //    return await base.SaveChangesAsync(cancellationToken);
-        //}
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            return await base.SaveChangesAsync(cancellationToken);
+        }
     }
 }
