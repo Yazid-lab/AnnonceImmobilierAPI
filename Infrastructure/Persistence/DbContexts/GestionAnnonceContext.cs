@@ -30,8 +30,8 @@ namespace Infrastructure.Persistence.DbContexts
             modelBuilder.Entity<Utilisateur>()
                 .HasData(
                     new Utilisateur(1, "nom1", "prenom1", "email1", "tel1"));
-            //modelBuilder.Entity<Annonce>()
-            //    .HasData(new Annonce("annonce1")
+            //modelBuilder.Entity<Annonces>()
+            //    .HasData(new Annonces("annonce1")
             //    {
             //        Id = 1,
             //        Description = "desc1",
@@ -41,7 +41,7 @@ namespace Infrastructure.Persistence.DbContexts
             //        DatePublication = DateTime.Now,
             //        UtilisateurId = 1,
             //    });
-            //modelBuilder.Entity<Annonce>().OwnsOne(annonce => annonce.Adresse).HasData(new
+            //modelBuilder.Entity<Annonces>().OwnsOne(annonce => annonce.Adresse).HasData(new
             //{
             //    AnnonceId = 1,
             //    CodePostal = "code",
@@ -53,12 +53,12 @@ namespace Infrastructure.Persistence.DbContexts
             //});
             modelBuilder.Entity<Annonce>(a =>
             {
-                a.HasData(new Annonce
+                a.HasData(new
                 {
                     Id = 1,
                     Titre = "annonce 1",
                     Description = "desc1",
-                    Prix = 111,
+                    Prix = (decimal)111,
                     Superficie = 1,
                     NbPieces = 2,
                     DatePublication = DateTime.Now,

@@ -12,9 +12,13 @@ namespace Infrastructure.Persistence.Configurations
             builder.Property(u => u.Id).ValueGeneratedOnAdd();
             builder.Property(u => u.Prenom).IsRequired().HasMaxLength(50);
             builder.Property(u => u.Nom).IsRequired().HasMaxLength(50);
-            builder.HasOne(u => u.Annonce)
+            //builder.HasOne(u => u.Annonces)
+            //    .WithOne(a => a.Utilisateur)
+            //    .HasForeignKey<Annonces>(a => a.UtilisateurId);
+            builder.HasMany<Annonce>(u => u.Annonces)
                 .WithOne(a => a.Utilisateur)
-                .HasForeignKey<Annonce>(a => a.UtilisateurId);
+                .HasForeignKey(a => a.UtilisateurId)
+                .OnDelete(DeleteBehavior.Cascade);
 
         }
     }

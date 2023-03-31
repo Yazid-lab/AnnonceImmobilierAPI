@@ -9,6 +9,7 @@ namespace GestionAnnonce.Application.Common.Mappings
         public PhotoProfile()
         {
             CreateMap<Photo, PhotoDto>();
+            CreateMap<PhotoDto, Photo>();
         }
     }
 }

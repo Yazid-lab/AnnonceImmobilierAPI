@@ -8,7 +8,7 @@
         public string Email { get; set; } = string.Empty;
         public string Telephone { get; set; } = string.Empty;
         //public int? AnnonceId { get; set; }
-        public Annonce? Annonce { get; set; }
+        public ICollection<Annonce> Annonces { get; set; }
 
 
         public Utilisateur(int id, string nom, string prenom, string email, string telephone)

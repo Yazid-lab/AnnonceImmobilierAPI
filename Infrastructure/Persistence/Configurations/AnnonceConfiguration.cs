@@ -15,9 +15,9 @@ namespace Infrastructure.Persistence.Configurations
             builder.HasMany(annonce => annonce.Photos)
                 .WithOne(photo => photo.Annonce)
                 .HasForeignKey(photo => photo.AnnonceId);
-            builder.HasOne(a => a.Utilisateur)
-                .WithOne(u => u.Annonce)
-                .HasForeignKey<Utilisateur>(u => u.Id);
+            //builder.HasOne(a => a.Utilisateur)
+            //    .WithOne(u => u.Annonces)
+            //    .HasForeignKey<Utilisateur>(u => u.Id);
             builder.OwnsOne(annonce => annonce.Adresse);
         }
     }

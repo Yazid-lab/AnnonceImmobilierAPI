@@ -4,6 +4,7 @@ using Infrastructure.Persistence.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(GestionAnnonceContext))]
-    partial class GestionAnnonceContextModelSnapshot : ModelSnapshot
+    [Migration("20230331133630_changedRelationAnnonceUtilisateur")]
+    partial class changedRelationAnnonceUtilisateur
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,7 +53,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UtilisateurId")
+                    b.Property<int?>("UtilisateurId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -63,7 +66,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            DatePublication = new DateTime(2023, 3, 31, 15, 3, 15, 463, DateTimeKind.Local).AddTicks(6667),
+                            DatePublication = new DateTime(2023, 3, 31, 14, 36, 30, 81, DateTimeKind.Local).AddTicks(7318),
                             Description = "desc1",
                             NbPieces = 2,
                             Prix = 111m,
@@ -153,9 +156,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.Utilisateur", "Utilisateur")
                         .WithMany("Annonces")
-                        .HasForeignKey("UtilisateurId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UtilisateurId");
 
                     b.OwnsOne("Domain.ValueObjects.Adresse", "Adresse", b1 =>
                         {
