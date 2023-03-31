@@ -17,5 +17,9 @@ namespace Domain.ValueObjects
             Rue = rue; Ville = ville; CodePostal = codePostal; Pays = pays; Latitude = latitude; Longitude = longitude;
 
         }
+
+        public Adresse()
+        {
+        }
     }
 }

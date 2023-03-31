@@ -7,7 +7,7 @@
         public string Prenom { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Telephone { get; set; } = string.Empty;
-        public int? AnnonceId { get; set; }
+        //public int? AnnonceId { get; set; }
         public Annonce? Annonce { get; set; }
 
 
