@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.ValueObjects;
+﻿using Domain.ValueObjects;
+using GestionAnnonce.Application.Common.Models;
 
 namespace GestionAnnonce.Application.Annonces.Commands.CreateAnnonce
 {
-    public class CreateAnnonceModel
+    public class CreateAnnonceDto
     {
         public int Id { get; set; }
         public string Titre { get; set; } = string.Empty;
@@ -16,6 +12,7 @@ namespace GestionAnnonce.Application.Annonces.Commands.CreateAnnonce
         public int Superficie { get; set; }
         public int NbPieces { get; set; }
         public DateTime DatePublication { get; set; }
+        public ICollection<PhotoDto> Photos { get; set; } = new List<PhotoDto>();
         public Adresse? Adresse { get; set; }
         public int UtilisateurId { get; set; }
     }

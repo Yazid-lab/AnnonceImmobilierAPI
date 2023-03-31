@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Entities;
+using GestionAnnonce.Application.Annonces.Commands.CreateAnnonce;
 using GestionAnnonce.Application.Annonces.Commands.DeleteAnnonce;
 using GestionAnnonce.Application.Annonces.Queries.GetAnnonceById;
 using GestionAnnonce.Application.Annonces.Queries.GetAnnonces;
@@ -48,6 +49,13 @@ namespace GestionAnnonce.Api.Controllers
         public async Task<ActionResult<int>> DeleteAnnonce(int annonceId)
         {
             var id = await _mediator.Send(new DeleteAnnonceCommand(annonceId));
+            return Ok(id);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<int>> AddAnnonce([FromBody] CreateAnnonceDto annonce)
+        {
+            var id = await _mediator.Send(new CreateAnnonceCommand(annonce));
             return Ok(id);
         }
     }

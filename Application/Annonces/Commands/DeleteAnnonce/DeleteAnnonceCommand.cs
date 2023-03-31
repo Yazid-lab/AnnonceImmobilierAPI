@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GestionAnnonce.Application.Common.Interfaces;
+﻿using GestionAnnonce.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace GestionAnnonce.Application.Annonces.Commands.DeleteAnnonce
 {
