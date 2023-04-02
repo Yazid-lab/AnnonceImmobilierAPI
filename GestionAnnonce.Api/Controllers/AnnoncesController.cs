@@ -2,6 +2,7 @@
 using Domain.Entities;
 using GestionAnnonce.Application.Annonces.Commands.CreateAnnonce;
 using GestionAnnonce.Application.Annonces.Commands.DeleteAnnonce;
+using GestionAnnonce.Application.Annonces.Commands.UpdateAnnonce;
 using GestionAnnonce.Application.Annonces.Queries.GetAnnonceById;
 using GestionAnnonce.Application.Annonces.Queries.GetAnnonces;
 using GestionAnnonce.Application.Common.Models;
@@ -49,6 +50,14 @@ namespace GestionAnnonce.Api.Controllers
         public async Task<ActionResult<int>> DeleteAnnonce(int annonceId)
         {
             var id = await _mediator.Send(new DeleteAnnonceCommand(annonceId));
+            return Ok(id);
+        }
+
+        [HttpPut("{annonceId:int}")]
+        public async Task<ActionResult<int>> UpdateAnnonce(int annonceId, UpdateAnnonceDto annonce)
+        {
+            var id = await _mediator.Send(new UpdateAnnonceCommand(annonceId, annonce));
+            if (id < 0) return NotFound();
             return Ok(id);
         }
 
