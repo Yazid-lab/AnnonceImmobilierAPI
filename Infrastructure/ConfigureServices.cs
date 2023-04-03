@@ -1,5 +1,4 @@
 ﻿using GestionAnnonce.Application.Common.Interfaces;
-using GestionAnnonce.Application.Common.Services;
 using Infrastructure.Persistence.DbContexts;
 using Infrastructure.Services.Repositories;
 using Microsoft.EntityFrameworkCore;

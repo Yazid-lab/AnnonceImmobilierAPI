@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GestionAnnonce.Application.Annonces.Commands.CreateAnnonce;
+﻿using GestionAnnonce.Application.Annonces.Commands.CreateAnnonce;
 using GestionAnnonce.Application.Annonces.Commands.UpdateAnnonce;
 using GestionAnnonce.Application.Common.Models;
 

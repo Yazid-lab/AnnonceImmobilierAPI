@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using Domain.Entities;
+﻿using Domain.Entities;
 using GestionAnnonce.Application.Annonces.Commands.CreateAnnonce;
-using GestionAnnonce.Application.Annonces.Commands.DeleteAnnonce;
 using GestionAnnonce.Application.Annonces.Commands.UpdateAnnonce;
 using GestionAnnonce.Application.Common.Services;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionAnnonce.Api.Controllers

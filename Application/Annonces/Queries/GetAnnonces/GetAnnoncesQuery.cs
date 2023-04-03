@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using Domain.Entities;
+﻿using Domain.Entities;
 using GestionAnnonce.Application.Common.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace GestionAnnonce.Application.Annonces.Queries.GetAnnonces
 {

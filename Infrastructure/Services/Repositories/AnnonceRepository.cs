@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using Domain.Entities;
+﻿using Domain.Entities;
 using GestionAnnonce.Application.Common.Interfaces;
 using Infrastructure.Persistence.DbContexts;
 using Microsoft.EntityFrameworkCore;
