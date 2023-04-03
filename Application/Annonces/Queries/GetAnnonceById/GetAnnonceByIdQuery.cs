@@ -6,26 +6,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GestionAnnonce.Application.Annonces.Queries.GetAnnonceById
 {
-    public record GetAnnonceByIdQuery : IRequest<Annonce>
+    public record GetAnnonceByIdQuery(int Id) : IRequest<Annonce>
     {
-        public int Id { get; set; }
     }
 
     public class GetAnnonceByIdHandler : IRequestHandler<GetAnnonceByIdQuery, Annonce>
     {
         private readonly IGestionAnnonceContext _context;
         private readonly IMapper _mapper;
+        private readonly IAnnonceRepository _annonceRepository;
 
-        public GetAnnonceByIdHandler(IGestionAnnonceContext context, IMapper mapper)
+        public GetAnnonceByIdHandler(IGestionAnnonceContext context, IMapper mapper, IAnnonceRepository annonceRepository)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _annonceRepository = annonceRepository ?? throw new ArgumentNullException(nameof(annonceRepository));
         }
         public async Task<Annonce?> Handle(GetAnnonceByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Annonces
-                .Where(annonce => annonce.Id == request.Id)
-                .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+            return await _annonceRepository.GetAnnonceByIdAsync(request.Id,cancellationToken);
         }
     }
 }

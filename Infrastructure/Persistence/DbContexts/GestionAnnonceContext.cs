@@ -2,7 +2,6 @@
 using Infrastructure.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 using GestionAnnonce.Application.Common.Interfaces;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Infrastructure.Persistence.DbContexts
 {

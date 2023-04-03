@@ -1,5 +1,7 @@
 ﻿using GestionAnnonce.Application.Common.Interfaces;
+using GestionAnnonce.Application.Common.Services;
 using Infrastructure.Persistence.DbContexts;
+using Infrastructure.Services.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -14,6 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection;
                     builder => builder.MigrationsAssembly(typeof(GestionAnnonceContext).Assembly.FullName)));
             services.AddScoped<IGestionAnnonceContext>(provider =>
                 provider.GetRequiredService<GestionAnnonceContext>());
+            services.AddScoped<IAnnonceRepository, AnnonceRepository>();
 
         return services;
         }

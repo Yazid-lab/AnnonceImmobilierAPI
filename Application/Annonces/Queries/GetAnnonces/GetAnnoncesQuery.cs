@@ -12,17 +12,15 @@ namespace GestionAnnonce.Application.Annonces.Queries.GetAnnonces
 
     public class GetAnnoncesHandler : IRequestHandler<GetAnnoncesQuery, IEnumerable<Annonce>>
     {
-        private readonly IGestionAnnonceContext _context;
-        private readonly IMapper _mapper;
+        private readonly IAnnonceRepository _annonceRepository;
 
-        public GetAnnoncesHandler(IGestionAnnonceContext context, IMapper mapper)
+        public GetAnnoncesHandler(IAnnonceRepository annonceRepository)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _annonceRepository = annonceRepository ?? throw new ArgumentNullException(nameof(annonceRepository));
         }
         public async Task<IEnumerable<Annonce>> Handle(GetAnnoncesQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Annonces.Include(annonce => annonce.Photos).ToListAsync(cancellationToken);
+            return await _annonceRepository.GetAnnoncesAsync(cancellationToken);
         }
     }
 }

@@ -6,30 +6,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GestionAnnonce.Application.Annonces.Commands.UpdateAnnonce
 {
-    public record UpdateAnnonceCommand(int annonceid, UpdateAnnonceDto annonce) : IRequest<int>
+    public record UpdateAnnonceCommand(int annonceid, Annonce annonce) : IRequest<int>
     {
     }
 
     public class UpdateAnnonceHandler : IRequestHandler<UpdateAnnonceCommand, int>
     {
-        private readonly IGestionAnnonceContext _context;
-        private readonly IMapper _mapper;
+        private readonly IAnnonceRepository _annonceRepository;
 
-        public UpdateAnnonceHandler(IGestionAnnonceContext gestion, IMapper mapper)
+        public UpdateAnnonceHandler(IGestionAnnonceContext gestion, IMapper mapper, IAnnonceRepository annonceRepository)
         {
-            _context = gestion ?? throw new ArgumentNullException(nameof(gestion));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _annonceRepository = annonceRepository ?? throw new ArgumentNullException(nameof(annonceRepository));
         }
         public async Task<int> Handle(UpdateAnnonceCommand request, CancellationToken cancellationToken)
         {
-            var annonceExists =
-                await _context.Annonces.AnyAsync(annonce => annonce.Id == request.annonceid, cancellationToken);
-            if (!annonceExists) return -1;
-            var annonceEntity = _mapper.Map<Annonce>(request.annonce);
-            _context.Annonces.Update(annonceEntity);
-            await _context.SaveChangesAsync(cancellationToken);
-            return annonceEntity.Id;
-
+            return await _annonceRepository.UpdateAnnonceAsync(request.annonceid,request.annonce, cancellationToken);
         }
     }
 }

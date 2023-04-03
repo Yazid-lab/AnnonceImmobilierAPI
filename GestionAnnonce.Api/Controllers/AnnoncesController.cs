@@ -3,9 +3,7 @@ using Domain.Entities;
 using GestionAnnonce.Application.Annonces.Commands.CreateAnnonce;
 using GestionAnnonce.Application.Annonces.Commands.DeleteAnnonce;
 using GestionAnnonce.Application.Annonces.Commands.UpdateAnnonce;
-using GestionAnnonce.Application.Annonces.Queries.GetAnnonceById;
-using GestionAnnonce.Application.Annonces.Queries.GetAnnonces;
-using GestionAnnonce.Application.Common.Models;
+using GestionAnnonce.Application.Common.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,48 +13,48 @@ namespace GestionAnnonce.Api.Controllers
     [ApiController]
     public class AnnoncesController : ControllerBase
     {
-        private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
+        private readonly IAnnonceService _annonceService;
 
-        public AnnoncesController(IMediator mediator, IMapper mapper)
+        public AnnoncesController(IAnnonceService annonceService)
         {
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _annonceService = annonceService ?? throw new ArgumentNullException(nameof(annonceService));
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Annonce>>> GetAnnonces()
         {
-            var annoncesList = await _mediator.Send(new GetAnnoncesQuery());
-            return Ok(_mapper.Map<IEnumerable<AnnonceDto>>(annoncesList));
+            var annoncesList =await _annonceService.GetAnnonces();
+            return Ok(annoncesList);
         }
 
         [HttpGet("{annonceId:int}")]
         public async Task<ActionResult<Annonce>> GetAnnonceById(int annonceId)
         {
-            var annonce = await _mediator.Send(new GetAnnonceByIdQuery()
-            {
-                Id = annonceId
-            });
+            var annonce = await _annonceService.GetAnnonceById(annonceId);
+        
             if (annonce == null)
             {
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<AnnonceDto>(annonce));
+            return Ok(annonce);
         }
 
         [HttpDelete("{annonceId:int}")]
-        public async Task<ActionResult<int>> DeleteAnnonce(int annonceId)
+        public async Task<ActionResult> DeleteAnnonce(int annonceId)
         {
-            var id = await _mediator.Send(new DeleteAnnonceCommand(annonceId));
+            var id = await _annonceService.DeleteAnnonce(annonceId);
+            if (id < 0)
+            {
+                return NotFound(); 
+            }
             return Ok(id);
         }
 
         [HttpPut("{annonceId:int}")]
         public async Task<ActionResult<int>> UpdateAnnonce(int annonceId, UpdateAnnonceDto annonce)
         {
-            var id = await _mediator.Send(new UpdateAnnonceCommand(annonceId, annonce));
+            var id = await _annonceService.UpdateAnnonce(annonceId, annonce);
             if (id < 0) return NotFound();
             return Ok(id);
         }
@@ -64,7 +62,7 @@ namespace GestionAnnonce.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> AddAnnonce([FromBody] CreateAnnonceDto annonce)
         {
-            var id = await _mediator.Send(new CreateAnnonceCommand(annonce));
+            var id = await _annonceService.AddAnnonce(annonce);
             return Ok(id);
         }
     }
