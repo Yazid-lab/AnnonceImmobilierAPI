@@ -14,6 +14,7 @@ public static class ConfigureServices
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         services.AddScoped<IAdService, AdService>();
+        services.AddScoped<IUserService, UserService>();
         return services;
     }
 
