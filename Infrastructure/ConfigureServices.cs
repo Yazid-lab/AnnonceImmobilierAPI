@@ -10,12 +10,12 @@ namespace Microsoft.Extensions.DependencyInjection;
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<GestionAnnonceContext>(options =>
+            services.AddDbContext<AdManagementContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-                    builder => builder.MigrationsAssembly(typeof(GestionAnnonceContext).Assembly.FullName)));
-            services.AddScoped<IGestionAnnonceContext>(provider =>
-                provider.GetRequiredService<GestionAnnonceContext>());
-            services.AddScoped<IAnnonceRepository, AnnonceRepository>();
+                    builder => builder.MigrationsAssembly(typeof(AdManagementContext).Assembly.FullName)));
+            services.AddScoped<IAdManagementContext>(provider =>
+                provider.GetRequiredService<AdManagementContext>());
+            services.AddScoped<IAdRepository, AdRepository>();
 
         return services;
         }

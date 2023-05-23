@@ -13,7 +13,7 @@ public static class ConfigureServices
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-        services.AddScoped<IAnnonceService, AnnonceService>();
+        services.AddScoped<IAdService, AdService>();
         return services;
     }
 
