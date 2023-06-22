@@ -62,6 +62,7 @@ namespace Infrastructure.Persistence.DbContexts
                     NbRooms = 2,
                     DatePublication = DateTime.Now,
                     UserId = 1,
+                    IsPublished = false,
                 });
                 a.OwnsOne(annonce => annonce.Address).HasData(new
                 {

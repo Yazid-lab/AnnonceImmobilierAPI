@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using GestionAnnonce.Application.Ads.Commands.UpdateAd;
 using GestionAnnonce.Application.Common.Interfaces;
 using Infrastructure.Persistence.DbContexts;
 using Microsoft.EntityFrameworkCore;
@@ -25,15 +26,15 @@ namespace Infrastructure.Services.Repositories
 
         public async Task<IEnumerable<Ad>> GetAdsAsync(CancellationToken cancellationToken)
         {
-            return await _context.Ads.Include(ad =>ad.Address).Include(a => a.Photos).ToListAsync(cancellationToken);
+            return await _context.Ads.Include(ad => ad.Address).Include(a => a.Photos).ToListAsync(cancellationToken);
         }
 
         public async Task<Ad?> GetAdByIdAsync(int id, CancellationToken cancellationToken)
         {
-            var entityAnnonce = await _context.Ads.Include(annonce => annonce.Photos)
+            var entityAd = await _context.Ads.Include(ad => ad.Photos)
                 .FirstOrDefaultAsync(an => an.Id == id,
                     cancellationToken);
-            return entityAnnonce;
+            return entityAd;
         }
 
         public async Task AddAdAsync(Ad adEntity, CancellationToken cancellationToken)
@@ -60,7 +61,21 @@ namespace Infrastructure.Services.Repositories
             {
                 return -1;
             }
+            var savedAd = await GetAdByIdAsync(requestAdId, cancellationToken);
+            _context.Entry(savedAd).State = EntityState.Detached;
+            var numberOfRequestedPhotos = requestAd.Photos.Count;
+            var numberOfSavedPhotos = savedAd!.Photos.Count;
             _context.Ads.Update(requestAd);
+            if (numberOfRequestedPhotos < numberOfSavedPhotos)
+            {
+                var savedPhotosIds = savedAd.Photos.Select(p => p.Id).ToList();
+                var photoIdsToRemove = savedPhotosIds.Except(requestAd.Photos.Select(p => p.Id)).ToList();
+                var photosToRemove = _context.Photos
+                    .Where(p => photoIdsToRemove.Contains(p.Id))
+                    .ToList();
+                _context.Photos.RemoveRange(photosToRemove);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
             await _context.SaveChangesAsync(cancellationToken);
             return requestAdId;
         }

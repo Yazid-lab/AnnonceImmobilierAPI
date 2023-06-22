@@ -15,6 +15,7 @@ namespace GestionAnnonce.Application.Ads.Commands.UpdateAd
         public ICollection<PhotoDto> Photos { get; set; } = new List<PhotoDto>();
         public Address? Address { get; set; }
         public int UserId { get; set; }
+        public bool IsPublished { get; set; }
 
     }
 }

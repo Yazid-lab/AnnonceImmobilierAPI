@@ -14,7 +14,8 @@ namespace Domain.Entities
         public ICollection<Photo> Photos { get; set; } = new List<Photo>();
         public Address? Address { get; set; }
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
+        public bool IsPublished { get; set; } = true;
 
         public Ad() { }
         public Ad(string title)

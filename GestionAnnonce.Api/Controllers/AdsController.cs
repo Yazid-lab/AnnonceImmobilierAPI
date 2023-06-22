@@ -53,7 +53,7 @@ namespace GestionAnnonce.Api.Controllers
         {
             var id = await _adService.UpdateAd(adId, ad);
             if (id < 0) return NotFound();
-            return Ok(id);
+            return Ok(ad);
         }
 
         [HttpPost]
