@@ -1,4 +1,5 @@
-﻿namespace Domain.Entities
+﻿using Microsoft.AspNetCore.Identity;
+namespace Domain.Entities
 {
     public class User
     {
@@ -7,7 +8,7 @@
         public string FirstName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Telephone { get; set; } = string.Empty;
-        public ICollection<Ad> Ads { get; set; }
+        public ICollection<Ad>? Ads { get; set; }
 
 
         public User(int id, string lastName, string firstName, string email, string telephone)

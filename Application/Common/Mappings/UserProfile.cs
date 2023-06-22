@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Domain.Entities;
 using GestionAnnonce.Application.Common.Models;
+using GestionAnnonce.Application.Users.Commands.UpdateUser;
 
 namespace GestionAnnonce.Application.Common.Mappings
 {
@@ -14,6 +10,7 @@ namespace GestionAnnonce.Application.Common.Mappings
         public UserProfile()
         {
             CreateMap<User, UserDto>();
+            CreateMap<UpdateUserDto, User>();
         }
     }
 }

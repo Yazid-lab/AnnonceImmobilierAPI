@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using GestionAnnonce.Application.Common.Services;
+using GestionAnnonce.Application.Users.Commands.UpdateUser;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,27 @@ namespace GestionAnnonce.Api.Controllers
         {
             var users = await _userService.GetUsers();
             return Ok(users);
+        }
+
+        [HttpPut("{userId:int}")]
+        public async Task<ActionResult<User>> UpdateUser(int userId, UpdateUserDto updatedUser)
+        {
+            var id = await _userService.UpdateUser(userId, updatedUser);
+            if (id < 0) return NotFound();
+            return Ok(updatedUser);
+
+        }
+
+        [HttpDelete("{userId:int}")]
+        public async Task<ActionResult> DeleteUser(int userId)
+        {
+            var id = await _userService.DeleteUser(userId);
+            if (id < 0)
+            {
+                return NotFound();
+
+            }
+            return Ok(id);
         }
     }
 }
