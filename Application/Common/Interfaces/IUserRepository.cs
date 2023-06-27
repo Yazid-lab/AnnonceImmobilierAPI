@@ -10,7 +10,7 @@ namespace GestionAnnonce.Application.Common.Interfaces
     public interface IUserRepository
     {
         Task<IEnumerable<User>> GetUsersAsync(CancellationToken cancellationToken);
-        Task<int> UpdateUserAsync(int requestUserId, User requestUser, CancellationToken cancellationToken);
-        Task<int> DeleteUserAsync(int requestUserId, CancellationToken cancellationToken);
+        Task<int> UpdateUserAsync(string requestUserId, User requestUser, CancellationToken cancellationToken);
+        Task<int> DeleteUserAsync(string requestUserId, CancellationToken cancellationToken);
     }
 }

@@ -16,7 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection;
             services.AddScoped<IAdManagementContext>(provider =>
                 provider.GetRequiredService<AdManagementContext>());
             services.AddScoped<IAdRepository, AdRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            //services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
         }

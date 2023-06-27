@@ -1,7 +1,6 @@
 ﻿using Domain.Entities;
 using GestionAnnonce.Application.Common.Services;
 using GestionAnnonce.Application.Users.Commands.UpdateUser;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionAnnonce.Api.Controllers

@@ -18,7 +18,7 @@ namespace Infrastructure.Services.Repositories
             return await _context.Users.ToListAsync(cancellationToken);
         }
 
-        public async Task<int> UpdateUserAsync(int requestUserId, User requestUser, CancellationToken cancellationToken)
+        public async Task<int> UpdateUserAsync(string requestUserId, User requestUser, CancellationToken cancellationToken)
         {
             if (await UserExists(requestUserId) == false)
             {
@@ -27,10 +27,10 @@ namespace Infrastructure.Services.Repositories
 
             _context.Users.Update(requestUser);
             await _context.SaveChangesAsync(cancellationToken);
-            return requestUserId;
+            return Convert.ToInt32(requestUserId);
         }
 
-        public async Task<int> DeleteUserAsync(int requestUserId, CancellationToken cancellationToken)
+        public async Task<int> DeleteUserAsync(string requestUserId, CancellationToken cancellationToken)
         {
             if (await UserExists(requestUserId) == false)
             {
@@ -38,11 +38,11 @@ namespace Infrastructure.Services.Repositories
             }
 
             await _context.Users.Where(user => user.Id == requestUserId).ExecuteDeleteAsync(cancellationToken);
-            return requestUserId;
+            return Convert.ToInt32(requestUserId);
 
         }
 
-        private async Task<bool> UserExists(int userId)
+        private async Task<bool> UserExists(string userId)
         {
             var user = await _context.Users.AsNoTracking().Where(user => user.Id == userId).FirstOrDefaultAsync();
             return user != null;
