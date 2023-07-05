@@ -18,7 +18,7 @@ public static class ConfigureServices
         services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
         services.AddDbContext<AdManangementIdentityDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-        services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AdManangementIdentityDbContext>().AddDefaultTokenProviders();
+        services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AdManangementIdentityDbContext>().AddDefaultTokenProviders();
         services.AddTransient<IAuthService, AuthService>();
         services.AddAuthentication(options =>
         {

@@ -4,9 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Identity.DbContext
 {
-    public class AdManangementIdentityDbContext: IdentityDbContext<User>
+    public class AdManangementIdentityDbContext : IdentityDbContext<ApplicationUser>
     {
-        public AdManangementIdentityDbContext(DbContextOptions<AdManangementIdentityDbContext> options) : base(options) { }
+        public AdManangementIdentityDbContext(DbContextOptions<AdManangementIdentityDbContext> options)
+            : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

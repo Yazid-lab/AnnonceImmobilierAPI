@@ -7,7 +7,7 @@ namespace GestionAnnonce.Application.Common.Interfaces
     {
          DbSet<Ad> Ads { get; }
          DbSet<Photo> Photos { get; }
-         DbSet<User> Users { get; }
+         //DbSet<User> Users { get; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

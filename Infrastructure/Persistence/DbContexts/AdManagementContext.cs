@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.DbContexts
 {
-    public class AdManagementContext : IdentityDbContext<User>, IAdManagementContext
+    public class AdManagementContext : DbContext, IAdManagementContext
     {
         public DbSet<Ad> Ads => Set<Ad>();
         public DbSet<Photo> Photos => Set<Photo>();
-        public DbSet<User> Users => Set<User>();
+        //public DbSet<User> Users => Set<User>();
 
 
         public AdManagementContext(DbContextOptions<AdManagementContext> options)
@@ -22,16 +22,16 @@ namespace Infrastructure.Persistence.DbContexts
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new AdConfiguration());
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            //modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new PhotoConfiguration());
 
             modelBuilder.Entity<Photo>()
                 .HasData(
                     new Photo(1, "url1", "description1", 1)
                 );
-            modelBuilder.Entity<User>()
-                .HasData(
-                    new User("1", "lastName", "firstName", "email1", "tel1"));
+            //modelBuilder.Entity<User>()
+            //    .HasData(
+            //        new User("1", "lastName", "firstName", "email1", "tel1"));
             //modelBuilder.Entity<Ads>()
             //    .HasData(new Ads("annonce1")
             //    {

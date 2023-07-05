@@ -1,31 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Threading.Tasks;
 using Domain.Entities;
 using GestionAnnonce.Application.Common.Interfaces;
 using GestionAnnonce.Application.Common.Models.Identity;
 using GestionAnnonce.Application.Exceptions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Identity.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly JwtSettings _jwtSettings;
 
-        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, JwtSettings jwtSettings)
+        public AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
+            IOptions<JwtSettings> jwtSettings)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
-            _jwtSettings = jwtSettings ?? throw new ArgumentNullException(nameof(jwtSettings));
+            _jwtSettings = jwtSettings.Value ?? throw new ArgumentNullException(nameof(jwtSettings));
         }
 
         public async Task<AuthResponse> Login(AuthRequest request)
@@ -46,17 +43,44 @@ namespace Identity.Services
             var response = new AuthResponse
             {
                 Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 Email = user.Email,
             };
             return response;
         }
 
-        public Task<RegistrationResponse> Register(RegistrationRequest request)
+        public async Task<RegistrationResponse> Register(RegistrationRequest request)
         {
-            throw new NotImplementedException();
+            var user = new ApplicationUser
+            {
+                Email = request.Email,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                UserName = request.Email,
+                EmailConfirmed = true
+            };
+
+            var result = await _userManager.CreateAsync(user, request.Password);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "Standard");
+                return new RegistrationResponse() { UserId = user.Id };
+            }
+            else
+            {
+                StringBuilder str = new StringBuilder();
+                foreach (var err in result.Errors)
+                {
+                    str.AppendFormat("•{0}\n", err.Description);
+                }
+
+                throw new BadRequestException($"{str}");
+            }
         }
-        private async Task<JwtSecurityToken> GenerateToken(User user)
+        private async Task<JwtSecurityToken> GenerateToken(ApplicationUser user)
         {
             var userClaims = await _userManager.GetClaimsAsync(user);
             var roles = await _userManager.GetRolesAsync(user);
