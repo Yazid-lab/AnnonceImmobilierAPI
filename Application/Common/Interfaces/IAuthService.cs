@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GestionAnnonce.Application.Common.Models.Identity;
+﻿using GestionAnnonce.Application.Common.Models.Identity;
 
 namespace GestionAnnonce.Application.Common.Interfaces
 {
@@ -11,6 +6,12 @@ namespace GestionAnnonce.Application.Common.Interfaces
     {
         Task<AuthResponse> Login(AuthRequest request);
         Task<RegistrationResponse> Register(RegistrationRequest request);
+        Task Logout();
+        Task<ApplicationUserDto> GetUserInfoById(string id);
+
+        Task<IEnumerable<ApplicationUserDto>> GetUsers();
+
+        Task<string?> DeleteUser(string id);
 
     }
 }

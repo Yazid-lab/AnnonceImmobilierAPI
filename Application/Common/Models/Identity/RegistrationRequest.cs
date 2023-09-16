@@ -16,6 +16,8 @@ namespace GestionAnnonce.Application.Common.Models.Identity
         public string LastName { get; set; }
 
         [Required]
+        public string Telephone { get; set; }
+        [Required]
         public string Email { get; set; }
         [Required]
         [MinLength(6)]

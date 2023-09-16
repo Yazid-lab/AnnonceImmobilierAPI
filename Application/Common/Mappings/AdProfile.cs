@@ -13,7 +13,8 @@ namespace GestionAnnonce.Application.Common.Mappings
             CreateMap<Ad, AdDto>();
             CreateMap<CreateAdDto, Ad>();
             CreateMap<UpdateAdDto, Ad>();
-            CreateMap<IEnumerable<Ad>, AdDto>();
+            //CreateMap<IEnumerable<Ad>, AdDto>();
+
         }
     }
 }
