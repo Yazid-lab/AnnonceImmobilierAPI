@@ -1,4 +1,6 @@
 ﻿using Domain.Entities;
+using Firebase.Auth;
+using Firebase.Storage;
 using GestionAnnonce.Application.Ads.Commands.CreateAd;
 using GestionAnnonce.Application.Ads.Commands.UpdateAd;
 using GestionAnnonce.Application.Common.Services;
@@ -11,10 +13,48 @@ namespace GestionAnnonce.Api.Controllers
     public class AdsController : ControllerBase
     {
         private readonly IAdService _adService;
+        private static string ApiKey = "AIzaSyB-hMGvBxBHHx-D8SNl8h_mVEdQ2SPG0F0";
+        private static string Bucket = "homeconnect-a82c7.appspot.com";
+        private static string AuthEmail = "imageUploader@gmail.com";
+        private static string AuthPassword = "im@ge_uploader_v1";
 
         public AdsController(IAdService adService)
         {
             _adService = adService ?? throw new ArgumentNullException(nameof(adService));
+        }
+
+
+        private async Task<string?> UploadImageToFirebase(Stream stream, string fileName)
+        {
+            // of course you can login using other method, not just email+password
+            var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
+            var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
+
+            // you can use CancellationTokenSource to cancel the upload midway
+            var cancellation = new CancellationTokenSource();
+
+            var task = new FirebaseStorage(
+                    Bucket,
+                    new FirebaseStorageOptions
+                    {
+                        AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                        ThrowOnCancel = true // when you cancel the upload, exception is thrown. By default no exception is thrown
+                    })
+                .Child("images")
+                .Child(fileName)
+                .PutAsync(stream);
+            
+            try
+            {
+                string link = await task;
+                return link;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception while uploading image was thrown {0}",ex);
+            }
+
+            return null;
         }
 
         [HttpGet]
@@ -61,6 +101,18 @@ namespace GestionAnnonce.Api.Controllers
         {
             var adDto = await _adService.AddAd(ad);
             return Ok(adDto);
+        }
+
+        [HttpPost("/image")]
+        public async Task<ActionResult> UploadImage([FromForm] IFormFile image)
+        {
+            using (var stream = image.OpenReadStream())
+            {
+                var link = await UploadImageToFirebase(stream, image.FileName);
+                return Ok(link);
+            }
+
+            return BadRequest();
         }
     }
 }
