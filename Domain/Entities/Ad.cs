@@ -13,8 +13,8 @@ namespace Domain.Entities
         public DateTime DatePublication { get; set; }
         public ICollection<Photo> Photos { get; set; } = new List<Photo>();
         public Address? Address { get; set; }
-        public int UserId { get; set; }
-        public ApplicationUser? User { get; set; }
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
         public bool IsPublished { get; set; } = true;
 
         public Ad() { }

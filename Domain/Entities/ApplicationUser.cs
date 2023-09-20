@@ -6,7 +6,7 @@ namespace Domain.Entities
         public string? LastName { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string Telephone { get; set; } = string.Empty;
-        public ICollection<Ad>? Ads { get; set; }
+        public ICollection<Ad> Ads {get; set; }
 
 
         //public User(string id, string lastName, string firstName, string email, string telephone)
