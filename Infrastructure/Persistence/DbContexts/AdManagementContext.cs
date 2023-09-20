@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.DbContexts
 {
-    public class AdManagementContext : DbContext, IAdManagementContext
+    public class AdManagementContext :IdentityDbContext, IAdManagementContext
     {
         public DbSet<Ad> Ads => Set<Ad>();
         public DbSet<Photo> Photos => Set<Photo>();
@@ -64,7 +64,7 @@ namespace Infrastructure.Persistence.DbContexts
                     Area = 1,
                     NbRooms = 2,
                     DatePublication = DateTime.Now,
-                    UserId = 1,
+                    ApplicationUserId = "1",
                     IsPublished = false,
                 });
                 a.OwnsOne(annonce => annonce.Address).HasData(new

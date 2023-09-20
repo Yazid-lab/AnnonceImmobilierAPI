@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Identity.Migrations
 {
     /// <inheritdoc />
-    public partial class initialIdentityMigration : Migration
+    public partial class firstmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -77,7 +77,7 @@ namespace Identity.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ad",
+                name: "Ads",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -94,18 +94,18 @@ namespace Identity.Migrations
                     Address_Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address_Latitude = table.Column<double>(type: "float", nullable: true),
                     Address_Longitude = table.Column<double>(type: "float", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     IsPublished = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ad", x => x.Id);
+                    table.PrimaryKey("PK_Ads", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ad_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Ads_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -194,7 +194,7 @@ namespace Identity.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Photo",
+                name: "Photos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -205,11 +205,11 @@ namespace Identity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Photo", x => x.Id);
+                    table.PrimaryKey("PK_Photos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Photo_Ad_AdId",
+                        name: "FK_Photos_Ads_AdId",
                         column: x => x.AdId,
-                        principalTable: "Ad",
+                        principalTable: "Ads",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -228,9 +228,14 @@ namespace Identity.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Telephone", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "04d6bde8-17fd-4e24-b344-784cbb8ab0fc", "email@gmail.com", true, "Yazid", "Bougrine", false, null, "EMAIL@GMAIL.COM", null, "AQAAAAIAAYagAAAAEKFJFEJ17/DexxFOIy0myPrfCAq/JOvtN7wLrZGwEIrVzj0CDaafe7xoFePeQSc/FA==", null, false, "659e68e9-f405-441c-9e83-e79a2b61b477", "", false, null },
-                    { "2", 0, "615cb05f-aa74-4637-9a3c-0f7ac35d615f", "john@doe.com", true, "John", "Doe", false, null, "JOHN@DOE.COM", null, "AQAAAAIAAYagAAAAEOuMOK3jiG/lvWkJ0WEGEWF0fCpN9hjCvO6ommMYO9/Hc/dhw0x0JNj0K2Zwoo5d7Q==", null, false, "6bc7022f-87c0-4222-a44a-558508e6168d", "", false, null }
+                    { "1", 0, "897075ac-070e-4cd6-ba5d-0ae70e7311ff", "email@gmail.com", true, "Yazid", "Bougrine", false, null, "EMAIL@GMAIL.COM", null, "AQAAAAIAAYagAAAAEG9m85b3Wv6qdyEKIXCNIfReWM+Z/JmTRdvMgmn8WVQ78r3JQDvsspyrs0EjE9f0bg==", null, false, "8d7da8e3-dcc3-4c02-9a99-8ff2f794f9fc", "", false, null },
+                    { "2", 0, "78bbf73a-7ff9-4ffd-b61a-347abff9d069", "john@doe.com", true, "John", "Doe", false, null, "JOHN@DOE.COM", null, "AQAAAAIAAYagAAAAEGJIY4sUx7GHT7LXEqYAojDlID6au5bVLt9I1acwDGbt0MZleInr7T0fKAXIPPZ26w==", null, false, "a3ea0a4e-d14e-41f3-91d3-f89167101da2", "", false, null }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Ads",
+                columns: new[] { "Id", "ApplicationUserId", "Area", "DatePublication", "Description", "IsPublished", "NbRooms", "Price", "Title", "Address_Country", "Address_Latitude", "Address_Longitude", "Address_PostCode", "Address_Street", "Address_Town" },
+                values: new object[] { 1, "1", 1, new DateTime(2023, 9, 16, 12, 1, 46, 955, DateTimeKind.Local).AddTicks(9307), "desc1", false, 2, 111m, "Ad 1", "tunisia", 11.0, 22.0, "code", "rue", "tunis" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -241,10 +246,15 @@ namespace Identity.Migrations
                     { "2", "2" }
                 });
 
+            migrationBuilder.InsertData(
+                table: "Photos",
+                columns: new[] { "Id", "AdId", "Description", "Url" },
+                values: new object[] { 1, 1, "description1", "url1" });
+
             migrationBuilder.CreateIndex(
-                name: "IX_Ad_UserId1",
-                table: "Ad",
-                column: "UserId1");
+                name: "IX_Ads_ApplicationUserId",
+                table: "Ads",
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -286,8 +296,8 @@ namespace Identity.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photo_AdId",
-                table: "Photo",
+                name: "IX_Photos_AdId",
+                table: "Photos",
                 column: "AdId");
         }
 
@@ -310,13 +320,13 @@ namespace Identity.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Photo");
+                name: "Photos");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Ad");
+                name: "Ads");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

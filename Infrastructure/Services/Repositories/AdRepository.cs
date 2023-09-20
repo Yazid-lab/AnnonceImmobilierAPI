@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using GestionAnnonce.Application.Ads.Commands.UpdateAd;
 using GestionAnnonce.Application.Common.Interfaces;
+using Identity.DbContext;
 using Infrastructure.Persistence.DbContexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,9 +10,9 @@ namespace Infrastructure.Services.Repositories
     public class AdRepository : IAdRepository
     {
 
-        private readonly AdManagementContext _context;
+        private readonly AdManangementIdentityDbContext _context;
 
-        public AdRepository(AdManagementContext context)
+        public AdRepository(AdManangementIdentityDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }

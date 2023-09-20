@@ -122,6 +122,7 @@ namespace Identity.Services
                     Email = user.Email!,
                     FirstName = user.FirstName,
                     LastName = user.LastName!,
+                    Telephone = user.Telephone,
                     Roles = userRole[0]
                 };
                 usersDtos.Add(userDto);

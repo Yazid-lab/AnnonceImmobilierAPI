@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Identity.Migrations
 {
     [DbContext(typeof(AdManangementIdentityDbContext))]
-    [Migration("20230628201151_initialIdentityMigration")]
-    partial class initialIdentityMigration
+    [Migration("20230916110147_first-migration")]
+    partial class firstmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,10 @@ namespace Identity.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Area")
                         .HasColumnType("int");
@@ -56,17 +60,25 @@ namespace Identity.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Ad");
+                    b.ToTable("Ads");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ApplicationUserId = "1",
+                            Area = 1,
+                            DatePublication = new DateTime(2023, 9, 16, 12, 1, 46, 955, DateTimeKind.Local).AddTicks(9307),
+                            Description = "desc1",
+                            IsPublished = false,
+                            NbRooms = 2,
+                            Price = 111m,
+                            Title = "Ad 1"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
@@ -149,16 +161,16 @@ namespace Identity.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "04d6bde8-17fd-4e24-b344-784cbb8ab0fc",
+                            ConcurrencyStamp = "897075ac-070e-4cd6-ba5d-0ae70e7311ff",
                             Email = "email@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Yazid",
                             LastName = "Bougrine",
                             LockoutEnabled = false,
                             NormalizedEmail = "EMAIL@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKFJFEJ17/DexxFOIy0myPrfCAq/JOvtN7wLrZGwEIrVzj0CDaafe7xoFePeQSc/FA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEG9m85b3Wv6qdyEKIXCNIfReWM+Z/JmTRdvMgmn8WVQ78r3JQDvsspyrs0EjE9f0bg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "659e68e9-f405-441c-9e83-e79a2b61b477",
+                            SecurityStamp = "8d7da8e3-dcc3-4c02-9a99-8ff2f794f9fc",
                             Telephone = "",
                             TwoFactorEnabled = false
                         },
@@ -166,16 +178,16 @@ namespace Identity.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "615cb05f-aa74-4637-9a3c-0f7ac35d615f",
+                            ConcurrencyStamp = "78bbf73a-7ff9-4ffd-b61a-347abff9d069",
                             Email = "john@doe.com",
                             EmailConfirmed = true,
                             FirstName = "John",
                             LastName = "Doe",
                             LockoutEnabled = false,
                             NormalizedEmail = "JOHN@DOE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOuMOK3jiG/lvWkJ0WEGEWF0fCpN9hjCvO6ommMYO9/Hc/dhw0x0JNj0K2Zwoo5d7Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGJIY4sUx7GHT7LXEqYAojDlID6au5bVLt9I1acwDGbt0MZleInr7T0fKAXIPPZ26w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6bc7022f-87c0-4222-a44a-558508e6168d",
+                            SecurityStamp = "a3ea0a4e-d14e-41f3-91d3-f89167101da2",
                             Telephone = "",
                             TwoFactorEnabled = false
                         });
@@ -203,7 +215,16 @@ namespace Identity.Migrations
 
                     b.HasIndex("AdId");
 
-                    b.ToTable("Photo");
+                    b.ToTable("Photos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AdId = 1,
+                            Description = "description1",
+                            Url = "url1"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -367,9 +388,11 @@ namespace Identity.Migrations
 
             modelBuilder.Entity("Domain.Entities.Ad", b =>
                 {
-                    b.HasOne("Domain.Entities.ApplicationUser", "User")
+                    b.HasOne("Domain.Entities.ApplicationUser", "ApplicationUser")
                         .WithMany("Ads")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.OwnsOne("Domain.ValueObjects.Address", "Address", b1 =>
                         {
@@ -400,15 +423,27 @@ namespace Identity.Migrations
 
                             b1.HasKey("AdId");
 
-                            b1.ToTable("Ad");
+                            b1.ToTable("Ads");
 
                             b1.WithOwner()
                                 .HasForeignKey("AdId");
+
+                            b1.HasData(
+                                new
+                                {
+                                    AdId = 1,
+                                    Country = "tunisia",
+                                    Latitude = 11.0,
+                                    Longitude = 22.0,
+                                    PostCode = "code",
+                                    Street = "rue",
+                                    Town = "tunis"
+                                });
                         });
 
                     b.Navigation("Address");
 
-                    b.Navigation("User");
+                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("Domain.Entities.Photo", b =>
