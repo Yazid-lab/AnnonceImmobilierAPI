@@ -32,7 +32,7 @@ namespace GestionAnnonce.Api.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Unauthorized();
+                return Unauthorized(new { message = e.Message });
             }
         }
 
@@ -47,14 +47,14 @@ namespace GestionAnnonce.Api.Controllers
                     userId = userDetails.UserId,
                     token = userDetails.EmailToken
                 }, Request.Scheme);
-                await _emailSender.SendEmailAsync(request.Email, "Confirm your emial",
+                await _emailSender.SendEmailAsync(request.Email, "Confirm your email",
                     $"Please confirm your email by clicking here :{confirmationLink}");
-                return Ok("User registered. please check your email to confirm it");
+                return Ok(new { message = "User registered. please check your email to confirm it" });
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return BadRequest(e.Message);
+                return BadRequest(new { message = e.Message });
             }
         }
 
@@ -101,8 +101,8 @@ namespace GestionAnnonce.Api.Controllers
             }
 
             var result = await _authService.ConfirmEmail(userId, token);
-            if (result == true) return Ok("Email confirmed successfully.");
-            else return BadRequest("Email confirmation failed");
+            if (result == true) return Ok(new { message = "Email confirmed successfully." });
+            else return BadRequest(new { message = "Email confirmation failed" });
         }
     }
 }
