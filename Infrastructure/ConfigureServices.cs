@@ -1,5 +1,6 @@
 ﻿using GestionAnnonce.Application.Common.Interfaces;
 using Infrastructure.Persistence.DbContexts;
+using Infrastructure.Services;
 using Infrastructure.Services.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,7 @@ public static class ConfigureServices
         services.AddScoped<IAdManagementContext>(provider =>
             provider.GetRequiredService<AdManagementContext>());
         services.AddScoped<IAdRepository, AdRepository>();
+        services.AddTransient<IEmailSender, EmailSender>();
         //services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
