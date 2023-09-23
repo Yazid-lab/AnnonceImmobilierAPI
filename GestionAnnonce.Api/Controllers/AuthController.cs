@@ -1,6 +1,8 @@
-﻿using GestionAnnonce.Application.Common.Interfaces;
+﻿using Firebase.Auth;
+using GestionAnnonce.Application.Common.Interfaces;
 using GestionAnnonce.Application.Common.Models.Identity;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 
@@ -11,10 +13,12 @@ namespace GestionAnnonce.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IEmailSender _emailSender;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IEmailSender emailSender)
         {
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+            _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
         }
 
         [HttpPost("login")]
@@ -33,17 +37,24 @@ namespace GestionAnnonce.Api.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
+        public async Task<ActionResult> Register(RegistrationRequest request)
         {
             try
             {
-
-                return Ok(await _authService.Register(request));
+                var userDetails = await _authService.Register(request);
+                var confirmationLink = Url.Action("ConfirmEmail", "Auth", new
+                {
+                    userId = userDetails.UserId,
+                    token = userDetails.EmailToken
+                }, Request.Scheme);
+                await _emailSender.SendEmailAsync(request.Email, "Confirm your emial",
+                    $"Please confirm your email by clicking here :{confirmationLink}");
+                return Ok("User registered. please check your email to confirm it");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return BadRequest();
+                return BadRequest(e.Message);
             }
         }
 
@@ -73,12 +84,25 @@ namespace GestionAnnonce.Api.Controllers
         public async Task<ActionResult> DeleteUser(string userId)
         {
             var id = await _authService.DeleteUser(userId);
-            if (id  ==null)
+            if (id == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
             return Ok(id);
 
+        }
+
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (userId == null || token == null)
+            {
+                return BadRequest("Invalid token.");
+            }
+
+            var result = await _authService.ConfirmEmail(userId, token);
+            if (result == true) return Ok("Email confirmed successfully.");
+            else return BadRequest("Email confirmation failed");
         }
     }
 }

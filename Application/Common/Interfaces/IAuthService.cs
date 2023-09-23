@@ -13,5 +13,6 @@ namespace GestionAnnonce.Application.Common.Interfaces
 
         Task<string?> DeleteUser(string id);
 
+        Task<bool> ConfirmEmail(string userId, string token);
     }
 }

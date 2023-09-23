@@ -57,9 +57,8 @@ namespace Identity.Services
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 UserName = request.Email,
-
-                Telephone = request.Telephone,
-                EmailConfirmed = true
+                Telephone = request.Telephone
+                //EmailConfirmed = true
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
@@ -67,7 +66,8 @@ namespace Identity.Services
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "Standard");
-                return new RegistrationResponse() { UserId = user.Id };
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                return new RegistrationResponse() { UserId = user.Id, EmailToken = token };
             }
             else
             {
@@ -108,7 +108,7 @@ namespace Identity.Services
             return response;
         }
 
-        public async  Task<IEnumerable<ApplicationUserDto>> GetUsers()
+        public async Task<IEnumerable<ApplicationUserDto>> GetUsers()
         {
             var usersEntities = await _userManager.Users.ToListAsync();
             var usersDtos = new List<ApplicationUserDto>();
@@ -130,12 +130,26 @@ namespace Identity.Services
             return usersDtos;
         }
 
-        public async  Task<string?> DeleteUser(string id)
+        public async Task<string?> DeleteUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null) return null;
             await _userManager.DeleteAsync(user);
             return user.Id;
+        }
+
+        public async Task<bool> ConfirmEmail(string userId, string token)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+
+            return result.Succeeded;
         }
 
         private async Task<JwtSecurityToken> GenerateToken(ApplicationUser user)
