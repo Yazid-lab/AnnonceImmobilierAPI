@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Data;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Domain.Entities;
@@ -31,13 +32,13 @@ namespace Identity.Services
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
             {
-                throw new NotFoundException($"User with {request.Email} not found", request.Email);
+                throw new NotFoundException(request.Email);
             }
 
             var passwordCheckResult = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
             if (passwordCheckResult.Succeeded == false)
             {
-                throw new BadRequestException($"Credentials for '{request.Email} aren't valid");
+                throw new BadRequestException($"Wrong Credentials.");
             }
 
             var jwtSecurityToken = await GenerateToken(user);
@@ -58,8 +59,14 @@ namespace Identity.Services
                 LastName = request.LastName,
                 UserName = request.Email,
                 Telephone = request.Telephone
-                //EmailConfirmed = true
             };
+
+            var userCheck = await _userManager.FindByEmailAsync(request.Email);
+
+            if (userCheck != null)
+            {
+                throw new DuplicateNameException("Email already exists");
+            }
 
             var result = await _userManager.CreateAsync(user, request.Password);
 
@@ -71,10 +78,10 @@ namespace Identity.Services
             }
             else
             {
-                StringBuilder str = new StringBuilder();
+                var str = new StringBuilder();
                 foreach (var err in result.Errors)
                 {
-                    str.AppendFormat("•{0}\n", err.Description);
+                    str.Append($"•{err.Description}\n");
                 }
 
                 throw new BadRequestException($"{str}");
@@ -93,7 +100,7 @@ namespace Identity.Services
             var userRoles = await _userManager.GetRolesAsync(user);
             if (user == null)
             {
-                throw new NotFoundException($"User with Id {id} was not found", id);
+                throw new NotFoundException($"User with Id {id} was not found");
             }
             var response = new ApplicationUserDto
             {

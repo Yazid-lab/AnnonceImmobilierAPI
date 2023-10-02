@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace GestionAnnonce.Application.Exceptions
 {
-    public class NotFoundException : Exception
+    public class EmailNotSentException: Exception
     {
-        public NotFoundException(string name) : base($"No user with the email '{name}' was found") { }
+        public EmailNotSentException( string emailType) : base( $"Error occured while sending the {emailType} email") { }
     }
 }

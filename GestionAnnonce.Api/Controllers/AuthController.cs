@@ -1,6 +1,7 @@
 ﻿using Firebase.Auth;
 using GestionAnnonce.Application.Common.Interfaces;
 using GestionAnnonce.Application.Common.Models.Identity;
+using GestionAnnonce.Application.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,16 @@ namespace GestionAnnonce.Api.Controllers
 
                 return Ok(await _authService.Login(request));
             }
+            catch (NotFoundException ex)
+            {
+                Console.WriteLine(ex);
+                return Unauthorized(new { message = ex.Message });
+            }
+            catch (BadRequestException ex)
+            {
+                Console.WriteLine(ex);
+                return Unauthorized(new { message = ex.Message });
+            }
             catch (Exception e)
             {
                 Console.WriteLine(e);
@@ -41,6 +52,7 @@ namespace GestionAnnonce.Api.Controllers
         {
             try
             {
+                
                 var userDetails = await _authService.Register(request);
                 var confirmationLink = Url.Action("ConfirmEmail", "Auth", new
                 {
