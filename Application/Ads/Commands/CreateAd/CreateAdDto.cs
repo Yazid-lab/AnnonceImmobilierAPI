@@ -1,4 +1,5 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.Entities;
+using Domain.ValueObjects;
 using GestionAnnonce.Application.Common.Models;
 
 namespace GestionAnnonce.Application.Ads.Commands.CreateAd
@@ -15,5 +16,6 @@ namespace GestionAnnonce.Application.Ads.Commands.CreateAd
         public ICollection<PhotoDto> Photos { get; set; } = new List<PhotoDto>();
         public Address? Address { get; set; }
         public string ApplicationUserId { get; set; }
+        public AdType AdType { get; set; }
     }
 }

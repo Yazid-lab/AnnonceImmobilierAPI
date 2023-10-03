@@ -10,9 +10,9 @@ namespace Infrastructure.Services.Repositories
     public class AdRepository : IAdRepository
     {
 
-        private readonly AdManangementIdentityDbContext _context;
+        private readonly AdManagementIdentityDbContext _context;
 
-        public AdRepository(AdManangementIdentityDbContext context)
+        public AdRepository(AdManagementIdentityDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }

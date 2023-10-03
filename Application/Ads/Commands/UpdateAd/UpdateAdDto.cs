@@ -1,4 +1,5 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.Entities;
+using Domain.ValueObjects;
 using GestionAnnonce.Application.Common.Models;
 
 namespace GestionAnnonce.Application.Ads.Commands.UpdateAd
@@ -16,6 +17,7 @@ namespace GestionAnnonce.Application.Ads.Commands.UpdateAd
         public Address? Address { get; set; }
         public string ApplicationUserId { get; set; }
         public bool IsPublished { get; set; }
+        public AdType AdType { get; set; }
 
     }
 }

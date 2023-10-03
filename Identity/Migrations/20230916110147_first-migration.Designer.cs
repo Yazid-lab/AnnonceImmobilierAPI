@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Identity.Migrations
 {
-    [DbContext(typeof(AdManangementIdentityDbContext))]
+    [DbContext(typeof(AdManagementIdentityDbContext))]
     [Migration("20230916110147_first-migration")]
     partial class firstmigration
     {

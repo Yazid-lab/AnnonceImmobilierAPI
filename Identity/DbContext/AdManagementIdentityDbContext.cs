@@ -5,15 +5,16 @@ using System.Reflection.Emit;
 
 namespace Identity.DbContext
 {
-    public class AdManangementIdentityDbContext : IdentityDbContext<ApplicationUser>
+    public class AdManagementIdentityDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Ad> Ads => Set<Ad>();
         public DbSet<Photo> Photos => Set<Photo>();
-        public AdManangementIdentityDbContext(DbContextOptions<AdManangementIdentityDbContext> options)
+        public AdManagementIdentityDbContext(DbContextOptions<AdManagementIdentityDbContext> options)
             : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Ad>().Property(ad => ad.AdType).HasConversion<string>();
             builder.Entity<Photo>()
                 .HasData(
                     new Photo(1, "url1", "description1", 1)
@@ -31,6 +32,7 @@ namespace Identity.DbContext
                     DatePublication = DateTime.Now,
                     ApplicationUserId = "1",
                     IsPublished = false,
+                    AdType = AdType.Rent
                 });
                 a.OwnsOne(annonce => annonce.Address).HasData(new
                 {
@@ -45,7 +47,7 @@ namespace Identity.DbContext
                 });
             });
             base.OnModelCreating(builder);
-            builder.ApplyConfigurationsFromAssembly(typeof(AdManangementIdentityDbContext).Assembly);
+            builder.ApplyConfigurationsFromAssembly(typeof(AdManagementIdentityDbContext).Assembly);
         }
 
     }

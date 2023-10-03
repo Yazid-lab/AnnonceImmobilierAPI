@@ -1,7 +1,15 @@
 ﻿using Domain.ValueObjects;
+using System.Runtime.Serialization;
 
 namespace Domain.Entities
 {
+
+
+    public enum AdType
+    {
+        Rent,
+        Sell
+    }
     public class Ad
     {
         public int Id { get; set; }
@@ -16,6 +24,7 @@ namespace Domain.Entities
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
         public bool IsPublished { get; set; } = true;
+        public AdType AdType { get; set; }
 
         public Ad() { }
         public Ad(string title)
